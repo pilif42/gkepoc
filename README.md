@@ -19,6 +19,13 @@ mvn clean install
     - 200 {"msg":"Hello local","time":"2021-02-06T08:36:50.319879Z"}
 
 
+# Docker tidy up
+- to remove all dangling images: sudo docker image prune
+- to remove a specific image:
+  - identify the IMAGE_ID you want to remove: sudo docker image ls
+  - sudo docker image rm f3bd1995bceb -f
+  
+
 # To create a Docker image and test it locally
 - to create the image: sudo mvn clean spring-boot:build-image
 - to verify that the image has been built: sudo docker images -> gkepoc, 0.0.1-SNAPSHOT
@@ -31,22 +38,23 @@ mvn clean install
 - to test the image: curl -k -v -H "Accept:application/hal+json" -H "Accept-Language:en-US" -H "Cache-Control:no-store" -X GET 'http://localhost:8080/greeting'
     - 200 {"msg":"Hello local","time":"2021-02-06T08:52:06.007149Z"}
   
-
-# Docker tidy up
-- to remove all dangling images: sudo docker image prune
-- to remove a specific image:
-    - identify the IMAGE_ID you want to remove: sudo docker image ls 
-    - sudo docker image rm f3bd1995bceb -f
-
+  
+# To inspect my Docker image with snyk
+- snyk auth
+    - it opens a browser window. I chose to authenticate with DockerID.
+    - once it shows Authenticated, go back to the terminal.
+- sudo snyk container test gkepoc:0.0.1-SNAPSHOT
+    - only low & medium severity vulnerabilities found.
+  
 
 # TODOs
-According to https://cloud.google.com/kubernetes-engine, new customers get $300 in free credits to spend on Google Cloud 
+- According to https://cloud.google.com/kubernetes-engine, new customers get $300 in free credits to spend on Google Cloud 
 during the first 90 days. All customers get one zonal cluster per month for free, not charged against your credits.
+- Start at https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app but using my app.  
 
 
 # TODOs that we did not complete in the AKS poc
 - Update an application: deploy in the cluster 0.0.1-SNAPSHOT. Then, small visible modif and deploy 0.0.2-SNAPSHOT.
-- Test my Docker image fully with snyk (Transfer notes from file into here). Attempt to clear some vulnerabilities.
 - So far, we have deployed to K8S using port 8080 and without specifying a Spring profile:
     - try to apply the local profile
     - try to use a different port
