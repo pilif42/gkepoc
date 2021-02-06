@@ -2,6 +2,23 @@
 POC using Google Kubernetes Engine
 
 
+# To build the application
+mvn clean install
+
+
+# To run the application
+- Run config in IntelliJ:
+    - pointing to GkePocApplication
+    - VM Options = -Dspring.profiles.active=local
+- Or: mvn clean package spring-boot:run -DskipTests=true -Dspring-boot.run.profiles=local
+
+
+# To test the application
+- with curl:
+  - curl -k -v -H "Accept:application/hal+json" -H "Accept-Language:en-US" -H "Cache-Control:no-store" -X GET 'http://localhost:8080/greeting'
+  - 200 {"msg":"Hello local","time":"2021-02-06T08:36:50.319879Z"}
+
+
 # TODOs
 According to https://cloud.google.com/kubernetes-engine, new customers get $300 in free credits to spend on Google Cloud 
 during the first 90 days. All customers get one zonal cluster per month for free, not charged against your credits.
